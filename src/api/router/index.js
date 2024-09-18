@@ -1,4 +1,3 @@
-
 module.exports = (app) => {
-    app.use('/', require("./apiRoutes"));
+    app.use('/vehicles', require("./apiRoutes"));
 }
