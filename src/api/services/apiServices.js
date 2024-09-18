@@ -1,6 +1,7 @@
 const ParkingSlot = require("../../models/parkingSlotSchema");
 const VehiclePass = require("../../models/passSchema");
 const Vehicle = require("../../models/vehicleSchema");
+const notification = require("../../utility/notification");
 
 const pricing = {
     cycle: {
@@ -383,6 +384,11 @@ exports.releaseSlotServices = async (req, res) => {
     try {
         const { slot_id } = req.body;
         const slot = await ParkingSlot.findById(slot_id)
+        const check = await Vehicle.findOne({ vehicle_number: slot.vehicle_number });
+
+        if (check) {
+            notification(check.phone_number, "Slot released successfully");
+        }
 
         slot.isOccupied = false;
         slot.vehicle_number = null;
